@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Extract nmap information
 function extractPorts(){
     ports="$(cat $1 | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ',')"
@@ -15,13 +17,14 @@ function extractPorts(){
 }
 
 # Funcion portScan
-
 function portScan(){
-    #echo -e "\n[+]Ingresa la direccion IP: \n" && read ip
     read -p "> IP Address: " ip
-    echo -e "\n[+]Selected IP Adress: $ip\n"
-    echo -e "\n[+]Scanning...\n"
+    echo -e "\n[+] Selected IP Address: $ip\n"
+    echo -e "\n[+] Scanning...\n"
     sudo nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn $ip -oG initScan
 
     extractPorts initScan
 }
+
+# Call the function portScan
+portScan
